@@ -35,6 +35,8 @@ static const int ESPTOUCH_DONE_BIT = BIT1;
 static const char *TAG = "SMART CONFIG";
 bool initEvent = false;
 
+extern __NOINIT_ATTR bool flag_smart_config;
+
 static void smartconfig_task(void * parm);
 
 static void event_handler(void* arg, esp_event_base_t event_base,
@@ -119,6 +121,8 @@ static void smartconfig_task(void * parm)
 		if(uxBits & ESPTOUCH_DONE_BIT) {
 			ESP_LOGI(TAG, "SmartConfig Done");
 			esp_smartconfig_stop();
+			flag_smart_config = false;
+			esp_restart();
 			vTaskDelete(NULL);
 		}
 	}
